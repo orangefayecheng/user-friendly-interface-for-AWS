@@ -53,26 +53,38 @@
             <% for (Reservation reservation : ec2.describeInstances().getReservations()) { %>
                 <% for (Instance instance : reservation.getInstances()) { %>
                    <li><%= instance.getInstanceId() %>
-                   <%= instance.getImageId() %>
-                   <%= instance.getInstanceType() %>
-                   <%= instance.getState().getName() %></li>
+                   <form action ="ec2options" method="post" id="ec2opt"></form>
+                   <select name="instance" id="instance">
+                   <option value="Stop">Stop</option>
+                   <option value="Start">Start</option>
+                   <option value="Terminate">Terminate</option>
+                   <option value="Reboot">Reboot</option>
+                   </select>
+                   <button type="button" id="ec2options">Select</button>
+                   <script type="text/javascript" src="js/jquery.js"></script>
+					<script type="text/javascript">
+					$("#ec2options").click(function(){
+						var option = document.querySelector("#instance");
+						var optionName = option.options[option.selectedIndex].value;
+						var instance_id = "<%=instance.getInstanceId()%>";
+						$("#ec2opt").submit();
+						
+					});
+		
+					</script>
                 <% } %>
             <% } %>
             </ul>
-           
+          
         </div>
-        </p>
 		<div class="section grid grid5 gridlast ec2">
 		<h2>
 		<a href="ec2.jsp">Create new ec2</a>
-		<!-- <form action ="ec2" method="post" id="ec2Create">
-		<button type="button" id="ec222">create ec2</button></form> --></div>
-		<script type="text/javascript">
-		$("#ec222").click(function(){
-			$("#ec2Create").submit();
-			
-		});
-		</script>
 		</h2>
+		<h2>
+		<a href="s3.jsp">Create new s3 bucket</a>
+		</h2>
+		</div>
+		
 </body>
 </html>

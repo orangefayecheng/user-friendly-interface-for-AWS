@@ -6,26 +6,25 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import service.ec2Service;
 import value_entity.MessageModelEC2;
+import value_entity.MessageModelS3;
+import service.s3Service;
 
 import java.io.IOException;
-@WebServlet("/ec2")
-public class ec2servelt extends HttpServlet {
-	private ec2Service ec2Service = new ec2Service();
+@WebServlet("/s3")
+public class s3servelt extends HttpServlet {
+	private s3Service s3Service = new s3Service();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-	   	String instance_type = req.getParameter("instance_type");
-	   	String key_name = req.getParameter("key_name");
-	    String security_group = req.getParameter("security_group");
-	    MessageModelEC2 returnmessage = ec2Service.ec2Create(instance_type,key_name,security_group);
+	   	String bucketName = req.getParameter("bucketName");
+	   	MessageModelS3 returnmessage = s3Service.s3CreateBucket(bucketName);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	res.sendRedirect("ec2message.jsp");
+	    	res.sendRedirect("s3message.jsp");
 	    }
 	    else {
 	    	req.getSession().setAttribute("returnmessage", returnmessage);
-	    	req.getRequestDispatcher("ec2.jsp").forward(req, res);
+	    	req.getRequestDispatcher("s3.jsp").forward(req, res);
 	    }
    }
 }
