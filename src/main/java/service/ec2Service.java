@@ -16,13 +16,13 @@ public class ec2Service {
 	
 	private AmazonEC2 ec2;
 	
-	public MessageModelEC2 ec2Create(String instance_type, String key_name, String security_group) {
+	public MessageModelEC2 ec2Create(String instance_type, String key_name, String security_group, String regionName) {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
 		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
 	            new InstanceProfileCredentialsProvider(),
 	            new ProfileCredentialsProvider("default"));
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
 	    
 		RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
         		  .withImageId("ami-0489c6c0a2c0b6281")

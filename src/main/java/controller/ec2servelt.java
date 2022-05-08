@@ -18,7 +18,8 @@ public class ec2servelt extends HttpServlet {
 	   	String instance_type = req.getParameter("instance_type");
 	   	String key_name = req.getParameter("key_name");
 	    String security_group = req.getParameter("security_group");
-	    MessageModelEC2 returnmessage = ec2Service.ec2Create(instance_type,key_name,security_group);
+	    String regionName = req.getParameter("regionName");
+	    MessageModelEC2 returnmessage = ec2Service.ec2Create(instance_type,key_name,security_group, regionName);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
 	    	res.sendRedirect("ec2message.jsp");

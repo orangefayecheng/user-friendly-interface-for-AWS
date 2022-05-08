@@ -17,10 +17,11 @@ public class s3servelt extends HttpServlet {
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 	   	String bucketName = req.getParameter("bucketName");
-	   	MessageModelS3 returnmessage = s3Service.s3CreateBucket(bucketName);
+	   	String regionName = req.getParameter("regionName");
+	   	MessageModelS3 returnmessage = s3Service.s3CreateBucket(bucketName, regionName);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	res.sendRedirect("s3message.jsp");
+	    	res.sendRedirect("index.jsp");
 	    }
 	    else {
 	    	req.getSession().setAttribute("returnmessage", returnmessage);

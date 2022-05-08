@@ -12,13 +12,13 @@ public class s3Service {
 	
 	private AmazonS3 s3;
 	
-	public MessageModelS3 s3CreateBucket(String bucketName) {
+	public MessageModelS3 s3CreateBucket(String bucketName, String regionName) {
 		MessageModelS3 messagemodel  = new MessageModelS3();
 		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
 	            new InstanceProfileCredentialsProvider(),
 	            new ProfileCredentialsProvider("default"));
 
-	    s3    = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
+	    s3    = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
 	    
 		s3.createBucket(bucketName);
         		

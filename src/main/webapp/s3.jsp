@@ -17,7 +17,8 @@
             <h2>Amazon EC2 Instances:</h2>
             <form action ="s3" method="post" id="s3bucket">
              bucketName: <input type="text" name="bucketName" id="bucketName"> <br>
-             <span id="msg" style="font-size: 12px;color: red"> ${returnmessage.message}</span> <br>
+             regionName: <input type="text" name="regionName" id="regionName"> <br>
+             <span id="msg" style="font-size: 12px;color: red"> </span> <br>
              <button type="button" id="createS3button">Create S3 bucket</button>
      </form>
         </div>
@@ -26,6 +27,7 @@
 <script type="text/javascript">
 $("#createS3button").click(function(){
 	var bucketName = $("#bucketName").val();
+	var regionName = $("#regionName").val();
 	$("#s3bucket").submit();
 	
 });
