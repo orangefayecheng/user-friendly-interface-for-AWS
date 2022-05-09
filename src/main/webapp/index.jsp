@@ -76,10 +76,10 @@
                 <% for (Instance instance : reservation.getInstances()) { %>
                 <% String insId = instance.getInstanceId(); %>
                    <li><%= insId %>
-                   <% request.getSession().setAttribute("instance_id", insId); %>
-                   <% RequestDispatcher dispatcher = request.getRequestDispatcher("/ec2options"); %>
+                   <%-- <% request.getSession().setAttribute("instance_id", insId); %>
+                   <% RequestDispatcher dispatcher = request.getRequestDispatcher("/ec2options"); %> --%>
                    <form action ="ec2options" method="post" id="ec2opt"></form>
-                   <select name="instance" id="instance">
+                   <select name="optionName" id="optionName">
                    <option value="Stop">Stop</option>
                    <option value="Start">Start</option>
                    <option value="Terminate">Terminate</option>
@@ -89,9 +89,9 @@
                    <script type="text/javascript" src="js/jquery.js"></script>
 					<script type="text/javascript">
 					$("#ec2optionsButton").click(function(){
-						selectElement = document.querySelector('#instance');
+						selectElement = document.querySelector('#optionName');
 						optionName = selectElement.value;
-						<%-- instance_id = "<%=insId%>"; --%>
+						instance_id = document.getElementById('insId').innerText;
 						$("#ec2opt").submit();
 						
 					});
@@ -109,6 +109,9 @@
 		</h2>
 		<h3>
 		<a href="s3.jsp">Create new s3 bucket</a>
+		</h3>
+		<h3>
+		<a href="vpc.jsp">Create a new vpc</a>
 		</h3>
 		</div>
 		
