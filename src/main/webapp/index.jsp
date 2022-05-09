@@ -10,7 +10,8 @@
 <%@ page import="com.amazonaws.services.dynamodbv2.model.*" %>
 <%@ page import="service.ec2optionsService" %>
 <%@ page import="java.util.List" %>
-<%@ page import="service.ec2optionsService" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="service.s3Service" %>
 
 <%! // Share the client objects across threads to
     // avoid creating new clients for each web request
@@ -39,32 +40,35 @@
         <div class="section grid grid5 s3">
             <h2>Amazon S3 Buckets:</h2>
             <ul>
-            <% for (Bucket bucket : s3.listBuckets()) { %>
-            <% String bName = bucket.getName(); %>
-               <li> <%= bName %>
-               <% String regionNaam = s3.getBucketLocation(bName);
-               String myRegionName = null;
-               if (regionNaam == "US") {
-               		 myRegionName = "us-east-1";
-               }
-               else {
-               		myRegionName = regionNaam;
-               }
-               s3Second = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(myRegionName).build();
-               ObjectListing objectListing = s3Second.listObjects(new ListObjectsRequest().withBucketName(bName));
-               for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) { %>
-               <ul><li><%=	objectSummary.getKey() %></li></ul>
-               <%} %>
-               <!-- <form action ="s3options" method="post" id="s3opt"></form>
-               <select name="s3bucket" id="s3bucket">
-               <option value="Add">Add</option>
-               <option value="Start">Start</option>
-               <option value="Terminate">Terminate</option>
-               <option value="Reboot">Reboot</option>
-               </select>
-               <button type="button" id="s3options">Select</button> -->
+            <% s3Service s3Service = new s3Service(); %>
+            <% String regionName = "us-east-2"; %>
+            <% List<String> bucketList = new ArrayList<String>(); %>
+            <% List<String> objectList = new ArrayList<String>(); %>
+            <% bucketList = s3Service.s3ListBuckets(regionName); %>
+            <% for (String bucket : bucketList) { %>
+            	<li><%= bucket %>
+            	<% objectList = s3Service.s3ListObjects(regionName, bucket); %>
+            	<ul>
+            	<% for (String objectName : objectList) { %>
+            		<li><%= objectName %>
+            	<% } %>
+            	 
+            	</ul>
             <% } %>
             </ul>
+            
+            <form action ="s3options" method="post" id="s3options" enctype="multipart/form-data">
+            bucket_option:
+             <select name="bucketOption" id="bucketOption">
+                   <option value="Add">Add</option>
+                   <option value="Delete">Delete</option>
+              </select></br>
+             objectName: <input type="text" name="objectName" id="objectName"> <br>
+             bucketName: <input type="text" name="bucketName" id="BucketName"> <br>
+             addFile: <input type="file" name="addFile" id="addFile">
+             <button type="button" id="s3optionsButton">Select</button>
+    		 </form>
+           
         </div>
         
         <div class="section grid grid5 gridlast ec2">
@@ -76,31 +80,23 @@
                 <% for (Instance instance : reservation.getInstances()) { %>
                 <% String insId = instance.getInstanceId(); %>
                    <li><%= insId %>
-                   <%-- <% request.getSession().setAttribute("instance_id", insId); %>
-                   <% RequestDispatcher dispatcher = request.getRequestDispatcher("/ec2options"); %> --%>
-                   <form action ="ec2options" method="post" id="ec2opt"></form>
-                   <select name="optionName" id="optionName">
+				<% } %>
+			<% } %>
+					
+            </ul>
+            
+            <form action ="ec2options" method="post" id="ec2options">
+            instance_option:
+             <select name="optionName" id="optionName">
                    <option value="Stop">Stop</option>
                    <option value="Start">Start</option>
                    <option value="Terminate">Terminate</option>
                    <option value="Reboot">Reboot</option>
-                   </select>
-                   <button type="button" id="ec2optionsButton">Select</button>
-                   <script type="text/javascript" src="js/jquery.js"></script>
-					<script type="text/javascript">
-					$("#ec2optionsButton").click(function(){
-						selectElement = document.querySelector('#optionName');
-						optionName = selectElement.value;
-						instance_id = document.getElementById('insId').innerText;
-						$("#ec2opt").submit();
-						
-					});
-		
-					</script>
-					</li>
-                <% } %>
-            <% } %>
-            </ul>
+              </select></br>
+             instance: <input type="text" name="instance_id" id="instance_id"> <br>
+             <button type="button" id="ec2optionsButton">Select</button>
+    		 </form>
+     
           
         </div>
 		<div class="section grid grid5 gridlast ec2">
@@ -114,6 +110,27 @@
 		<a href="vpc.jsp">Create a new vpc</a>
 		</h3>
 		</div>
+		
+		<script type="text/javascript" src="js/jquery.js"></script>
+					<script type="text/javascript">
+					$("#ec2optionsButton").click(function(){
+						selectElement = document.querySelector('#optionName');
+						optionName = selectElement.value;
+						instance_id = $("#instance_id").val();
+						$("#ec2options").submit();
+						
+					});
+					
+					$("#s3optionsButton").click(function(){
+						selectElementOption = document.querySelector('#bucketOption');
+						bucketOption = selectElementOption.value;
+						objectName = $("#objectName").val();
+						bucketName = $("#bucketName").val();
+						$("#s3options").submit();
+						
+					});
+		
+					</script>
 		
 </body>
 </html>

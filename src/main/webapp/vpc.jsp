@@ -44,6 +44,16 @@
              <button type="button" id="createVPCbutton">Create VPC</button>
      </form>
         </div>
+        
+     <!-- <div class="section grid grid5 s3">
+            <h2>Amazon VPC Peering Connection:</h2>
+            
+            <form action ="ec2" method="post" id="vpcPeering">
+             peerId: <input type="text" name="peerId" id="peerId"> <br>
+             peerRegion: <input type="text" name="peerRegion" id="peerRegion"> <br>
+             vpcId: <input type="text" name="vpcId" id="vpcId"> <br>
+             <button type="button" id="createVpcPeeringButton">Create vpc peering</button>
+            </div> -->
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
@@ -53,6 +63,14 @@ $("#createVPCbutton").click(function(){
 	$("#createVPC").submit();
 	
 });
+
+/* $("#createVpcPeeringbutton").click(function(){
+	peerId = $("#peerId").val();
+	peerRegion = $("#peerRegion").val();
+	vpcId = $("#vpcId").val();
+	$("#vpcPeering").submit();
+	
+}); */
 
 </script>
         		  
