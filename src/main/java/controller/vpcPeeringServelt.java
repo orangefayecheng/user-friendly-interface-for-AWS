@@ -22,11 +22,11 @@ public class vpcPeeringServelt extends HttpServlet {
 	    MessageModelEC2 returnmessage = vpcService.vpcPeering(peerId, peerRegion, vpcId);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	res.sendRedirect("vpc.jsp");
+	    	res.sendRedirect("vpcPeering.jsp");
 	    }
 	    else {
 	    	req.getSession().setAttribute("returnmessage", returnmessage);
-	    	req.getRequestDispatcher("index.jsp").forward(req, res);
+	    	req.getRequestDispatcher("vpc.jsp").forward(req, res);
 	    }
    }
 }
