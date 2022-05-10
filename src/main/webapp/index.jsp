@@ -12,22 +12,7 @@
 <%@ page import="java.util.List" %>
 <%@ page import="java.util.ArrayList" %>
 <%@ page import="service.s3Service" %>
-
-<%! // Share the client objects across threads to
-    // avoid creating new clients for each web request
-    private AmazonEC2         ec2;
-    private AmazonS3           s3;
-    private AmazonS3	 s3Second;
-    private AmazonDynamoDB dynamo;
- %>
-
-<%
-        AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-            new InstanceProfileCredentialsProvider(),
-            new ProfileCredentialsProvider("default"));
-        ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
-        s3     = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
-%>
+<%@ page import="service.ec2Service" %>
 
 <!DOCTYPE html>
 <html>
@@ -39,6 +24,13 @@
 <body>
         <div class="section grid grid5 s3">
             <h2>Amazon S3 Buckets:</h2>
+            <form id="region" method="post" >
+            <select name="regionName" id="regionName">
+                   <option value="us-east-2" selected>us-east-2</option>
+                   <option value="us-east-1">us-east-1</option>
+              </select>
+             <input type="submit" value="submit"/>
+             </form>
             <ul>
             <% s3Service s3Service = new s3Service(); %>
             <% String regionName = "us-east-2"; %>
@@ -62,7 +54,7 @@
              <select name="bucketOption" id="bucketOption">
                    <option value="Add">Add</option>
                    <option value="Delete">Delete</option>
-              </select></br>
+              </select>
              objectName: <input type="text" name="objectName" id="objectName"> <br>
              bucketName: <input type="text" name="bucketName" id="BucketName"> <br>
              addFile: <input type="file" name="addFile" id="addFile">
@@ -76,11 +68,15 @@
             <h2>Amazon EC2 Instances:</h2>
           		  
             <ul>
-            <% for (Reservation reservation : ec2.describeInstances().getReservations()) { %>
-                <% for (Instance instance : reservation.getInstances()) { %>
-                <% String insId = instance.getInstanceId(); %>
-                   <li><%= insId %>
-				<% } %>
+            <% ec2Service ec2Service = new ec2Service(); %>
+            <% String myRegion = request.getParameter("regionName"); %>
+            <% if (myRegion == null) { %>
+            <% myRegion = "us-east-2"; %>
+            <% } %>
+            <% List<Instance> instanceList = new ArrayList<Instance>(); %>
+            <% instanceList = ec2Service.listInstance(myRegion); %>
+           	<% for (Instance instance : instanceList) { %>
+                <li><%= instance.getInstanceId() %>
 			<% } %>
 					
             </ul>
@@ -92,7 +88,7 @@
                    <option value="Start">Start</option>
                    <option value="Terminate">Terminate</option>
                    <option value="Reboot">Reboot</option>
-              </select></br>
+              </select>
              instance: <input type="text" name="instance_id" id="instance_id"> <br>
              <button type="button" id="ec2optionsButton">Select</button>
     		 </form>

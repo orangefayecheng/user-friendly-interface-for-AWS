@@ -12,6 +12,7 @@ import value_entity.MessageModelEC2;
 import java.io.IOException;
 @WebServlet("/ec2")
 public class ec2servelt extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private ec2Service ec2Service = new ec2Service();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
@@ -19,7 +20,8 @@ public class ec2servelt extends HttpServlet {
 	   	String key_name = req.getParameter("key_name");
 	    String security_group = req.getParameter("security_group");
 	    String regionName = req.getParameter("regionName");
-	    MessageModelEC2 returnmessage = ec2Service.ec2Create(instance_type,key_name,security_group, regionName);
+	    String amiId = req.getParameter("amiId");
+	    MessageModelEC2 returnmessage = ec2Service.ec2Create(instance_type,key_name,security_group, regionName, amiId);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
 	    	res.sendRedirect("ec2message.jsp");

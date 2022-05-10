@@ -6,21 +6,22 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import value_entity.MessageModelEC2Options;
-import service.ec2optionsService;
+import value_entity.MessageModelEC2;
+import service.ec2Service;
 import java.io.IOException;
-@WebServlet("/ec2options")
-public class ec2options extends HttpServlet {
+@WebServlet("/ec2KeyPair")
+public class ec2KeyPair extends HttpServlet {
 	private static final long serialVersionUID = 1L;
-	private ec2optionsService ec2optionsService = new ec2optionsService();
+	private ec2Service ec2Service = new ec2Service();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-	   	String optionName = req.getParameter("optionName");
-	   	String instance_id = req.getParameter("instance_id");
-	   	MessageModelEC2Options returnmessage = ec2optionsService.ec2Options(optionName, instance_id);
+	   	String keyPairName = req.getParameter("keyPairName");
+	   	String keyRegion = req.getParameter("keyRegion");
+	   	String keyOption = req.getParameter("keyOption");
+	   	MessageModelEC2 returnmessage = ec2Service.createKeyPair(keyOption, keyPairName, keyRegion);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	res.sendRedirect("ec2optionsmessage.jsp");
+	    	res.sendRedirect("ec2.jsp");
 	    }
 	    else {
 	    	req.getSession().setAttribute("returnmessage", returnmessage);

@@ -4,18 +4,10 @@
 <%@ page import="com.amazonaws.auth.profile.*" %>
 <%@ page import="com.amazonaws.services.ec2.*" %>
 <%@ page import="com.amazonaws.services.ec2.model.*" %>
+<%@ page import="service.vpcService" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
 
-<%! // Share the client objects across threads to
-    // avoid creating new clients for each web request
-    private AmazonEC2         ec2;
- %>
-
-<%
-        AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-            new InstanceProfileCredentialsProvider(),
-            new ProfileCredentialsProvider("default"));
-        ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
-%>
 
 <!DOCTYPE html>
 <html>
@@ -27,12 +19,28 @@
 <body>
 	<div class="section grid grid5 s3">
             <h2>Amazon VPCs:</h2>
-            <ul></ul>
-            <% DescribeVpcsResult result = ec2.describeVpcs(); %>
-            <% for (Vpc vpc : result.getVpcs()) { %>
-            <li><%=vpc.getVpcId() %></li>
-            <ul><li><%=vpc.getCidrBlock() %></ul>
+            <form id="region" method="get" >
+            <select name="regionName" id="regionName">
+            	<option value="choose">Choose region</option>
+                   <option value="us-east-1">us-east-1</option>
+                   <option value="us-east-2">us-east-2</option>
+              </select>
+             <input type="submit" value="submit"/>
+             </form>
+            <ul>
+            <% vpcService vpcService = new vpcService(); %>
+            <% String regionName = request.getParameter("regionName"); %>
+            <% if (regionName == null) { %>
+            <% regionName = "us-east-2"; %>
             <% } %>
+            <% List<Vpc> vpcList = new ArrayList<Vpc>(); %>
+            <% vpcList = vpcService.listVpcs(regionName); %>
+            <% for (Vpc vpc : vpcList) { %>
+            	<li><%= vpc.getVpcId() %>
+            	<ul>
+	            <li><%= vpc.getCidrBlock() %></li>
+	            </ul>
+	        <% } %>
             </ul>
             </div>
 	<div class="section grid grid5 gridlast ec2">

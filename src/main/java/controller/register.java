@@ -11,6 +11,7 @@ import service.userService;
 import value_entity.MessageModel;
 @WebServlet("/register")
 public class register extends HttpServlet{
+	private static final long serialVersionUID = 1L;
 	private userService u_serv= new userService();
 	   @Override
 	   protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {

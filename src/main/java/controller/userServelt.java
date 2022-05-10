@@ -12,7 +12,8 @@ import value_entity.MessageModel;
 import java.io.IOException;
 @WebServlet("/login")
 public class userServelt extends HttpServlet {
-   private userService u_serv= new userService();
+   private static final long serialVersionUID = 1L;
+private userService u_serv= new userService();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 	     String username = req.getParameter("uname");

@@ -12,6 +12,7 @@ import service.vpcService;
 import java.io.IOException;
 @WebServlet("/vpc")
 public class vpcServelt extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private vpcService vpcService = new vpcService();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {

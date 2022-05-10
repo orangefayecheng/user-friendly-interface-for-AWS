@@ -18,6 +18,7 @@ import java.io.IOException;
 		  maxRequestSize = 1024 * 1024 * 100   // 100 MB
 		)
 public class s3options extends HttpServlet {
+	private static final long serialVersionUID = 1L;
 	private s3Service s3Service = new s3Service();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {

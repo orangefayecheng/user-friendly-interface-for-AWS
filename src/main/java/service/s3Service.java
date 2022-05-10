@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.amazonaws.auth.AWSCredentialsProviderChain;
-import com.amazonaws.auth.InstanceProfileCredentialsProvider;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
@@ -23,7 +22,6 @@ public class s3Service {
 	private AmazonS3 s3Client;
 	
 	AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-            new InstanceProfileCredentialsProvider(),
             new ProfileCredentialsProvider("default"));
 	
 	public MessageModelS3 s3CreateBucket(String bucketName, String regionName) {
@@ -78,7 +76,7 @@ public class s3Service {
 		else {
 			s3.putObject(bucketName, filename, filepath);
 			messagemodel.setStatus_code(1);  
-			messagemodel.setMessage("S3 bucket created with name " + bucketName);
+			messagemodel.setMessage("S3 bucket deleted with name " + bucketName);
 		}
 		return messagemodel;
 	}
