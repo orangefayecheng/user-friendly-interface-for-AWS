@@ -71,6 +71,10 @@
              <button type="button" id="createKeyPairbutton">Submit</button>
              </form>
         </div>
+        
+        <div>
+        <a href="index.jsp">Home</a>
+        </div>
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">
