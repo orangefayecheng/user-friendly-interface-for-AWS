@@ -1,9 +1,14 @@
 package service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
@@ -22,12 +27,23 @@ public class vpcService {
 	
 	private AmazonEC2 ec2;
 	
-	public MessageModelEC2 vpcCreate(String vpcId, String vpcOption, String cidrBlock, String regionName) {
+	public MessageModelEC2 vpcCreate(String vpcId, String vpcOption, String cidrBlock, String regionName) throws FileNotFoundException {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
 	    
 	    if (vpcOption.equals("Add")) {
 	    
@@ -49,12 +65,23 @@ public class vpcService {
 		return messagemodel;
 	}
 	
-	public MessageModelEC2 vpcPeering(String peerId, String peerRegion, String vpcId) {
+	public MessageModelEC2 vpcPeering(String peerId, String peerRegion, String vpcId) throws FileNotFoundException {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(peerRegion).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(peerRegion).build();
 	    
 	    CreateVpcPeeringConnectionRequest vpc = new CreateVpcPeeringConnectionRequest()
 	    		.withPeerVpcId(peerId)
@@ -74,12 +101,23 @@ public class vpcService {
   		return messagemodel;
 	}
 	
-	public List<Vpc> listVpcs(String peerRegion) {
+	public List<Vpc> listVpcs(String peerRegion) throws FileNotFoundException {
 		List<Vpc> vpcList = new ArrayList<Vpc>();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(peerRegion).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(peerRegion).build();
 	    
 	    DescribeVpcsResult result = ec2.describeVpcs();
 	    

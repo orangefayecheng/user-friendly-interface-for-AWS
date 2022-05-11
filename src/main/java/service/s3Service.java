@@ -1,10 +1,16 @@
 package service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
+import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.Bucket;
@@ -21,14 +27,26 @@ public class s3Service {
 	
 	private AmazonS3 s3Client;
 	
-	AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-            new ProfileCredentialsProvider("default"));
 	
-	public MessageModelS3 s3CreateBucket(String bucketName, String regionName) {
+	public MessageModelS3 s3CreateBucket(String bucketName, String regionName) throws FileNotFoundException {
 		MessageModelS3 messagemodel  = new MessageModelS3();
 		
 
-	    s3    = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
+
+	    s3   = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
 	    
 		s3.createBucket(bucketName);
         		
@@ -37,8 +55,22 @@ public class s3Service {
 		return messagemodel;
 	}
 	
-	public List<String> s3ListBuckets(String regionName) {
-		s3    = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+	public List<String> s3ListBuckets(String regionName) throws FileNotFoundException {
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
+
+	    s3   = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
 		List<String> bucketList = new ArrayList<String>(); 
 		for (Bucket bucket : s3.listBuckets()) {
 			bucketList.add(bucket.getName());
@@ -46,8 +78,22 @@ public class s3Service {
 		return bucketList;
 	}
 	
-	public List<String> s3ListObjects(String regionName, String bucketName) {
-		s3    = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+	public List<String> s3ListObjects(String regionName, String bucketName) throws FileNotFoundException {
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
+
+	    s3   = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
 		List<String> objectList = new ArrayList<String>();
 		String regionNaam = s3.getBucketLocation(bucketName);
 		String getRegion = null;
@@ -57,7 +103,7 @@ public class s3Service {
 		else {
 			getRegion = regionNaam;
 		}
-		s3Client = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(getRegion).build();
+		s3Client = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(getRegion).build();
 		ObjectListing objectListing = s3Client.listObjects(new ListObjectsRequest().withBucketName(bucketName));
 		for (S3ObjectSummary objectSummary : objectListing.getObjectSummaries()) {
 			objectList.add(objectSummary.getKey());
@@ -65,9 +111,23 @@ public class s3Service {
 		return objectList;
 	}
 	
-	public MessageModelS3 s3AddOrDeleteObject(String bucketOption, String objectName, String bucketName, String filename, String filepath) {
+	public MessageModelS3 s3AddOrDeleteObject(String bucketOption, String objectName, String bucketName, String filename, String filepath) throws FileNotFoundException {
 		MessageModelS3 messagemodel = new MessageModelS3();
-		s3    = AmazonS3ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
+
+	    s3   = AmazonS3ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion("us-east-2").build();
 		if (bucketOption.equals("Delete")) {
 			s3.deleteObject(new DeleteObjectRequest(bucketName, objectName));
 			messagemodel.setStatus_code(1);  

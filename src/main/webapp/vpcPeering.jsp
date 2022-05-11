@@ -17,6 +17,10 @@
             <h2>VPC peering connection created</h2>
             
             </div>
+            
+            <div>
+        <a href="index.jsp">Home</a>
+        </div>
           		  
 </body>
 </html> 

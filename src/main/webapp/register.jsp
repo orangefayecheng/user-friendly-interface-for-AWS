@@ -9,8 +9,8 @@
              username: <input type="text" name="uname" id="uname" value ="${returnmessage.message_object.username}"> <br>
              password: <input type="password" name="upwd" id="upwd" value ="${returnmessage.message_object.userpwd}"> <br>
              repeatpassword:  <input type="password" name="rpwd" id="rpwd" value ="${returnmessage.message_object.userpwd}"> <br>
-             usermasterkey: <input type="text" name="umaster" id="umaster" value ="${returnmessage.message_object.umasterkey}"> <br>
-             useraccesskey: <input type="text" name="uaccess" id="uaccess" value ="${returnmessage.message_object.uaccess}"> <br>
+             usermasterkey: <input type="text" name="umaster" id="umaster" value ="${returnmessage.message_object.usermasterkey}"> <br>
+             useraccesskey: <input type="text" name="uaccess" id="uaccess" value ="${returnmessage.message_object.useraccesskey}"> <br>
              <span id="msg" style="font-size: 12px;color: red"> ${returnmessage.message}</span> <br>
              <button type="button" id="RegisterBtn">Register</button>
      </form>

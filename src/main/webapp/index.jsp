@@ -26,9 +26,8 @@
 <div>
 <form id="region" method="post" >
             <select name="regionName" id="regionName">
-            <option value="Choose">Choose region</option>
                    <option value="us-east-1">us-east-1</option>
-                   <option value="us-east-2">us-east-2</option>
+                   <option value="us-east-2" selected>us-east-2</option>
                    <option value="us-west-1">us-west-1</option>
                    <option value="us-west-2">us-west-2</option>
               </select>
@@ -126,6 +125,7 @@
                    <option value="Reboot">Reboot</option>
               </select><br>
              instance: <input type="text" name="instance_id" id="instance_id"> <br>
+             region: <input type="text" name="region" id="region"> <br>
              <button type="button" id="ec2optionsButton">Select</button>
     		 </form>
     		 </div>
@@ -144,12 +144,18 @@
 		</h2>
 		</div>
 		
+		
+		<div>
+		<a href="login.jsp">Logout</a>
+		</div>
+		
 		<script type="text/javascript" src="js/jquery.js"></script>
 					<script type="text/javascript">
 					$("#ec2optionsButton").click(function(){
 						selectElement = document.querySelector('#optionName');
 						optionName = selectElement.value;
 						instance_id = $("#instance_id").val();
+						regionName = $('#region').value;
 						$("#ec2options").submit();
 						
 					});

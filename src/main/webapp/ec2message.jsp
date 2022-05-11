@@ -17,6 +17,10 @@
             <h2>Amazon EC2 instance created</h2>
             
         </div>
+        
+        <div>
+        <a href="index.jsp">Home</a>
+        </div>
           		  
 </body>
 </html>

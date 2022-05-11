@@ -29,6 +29,10 @@
              <button type="button" id="createS3button">Create S3 bucket</button>
      </form>
         </div>
+        
+        <div>
+        <a href="index.jsp">Home</a>
+        </div>
 
 <script type="text/javascript" src="js/jquery.js"></script>
 <script type="text/javascript">

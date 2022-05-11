@@ -17,6 +17,10 @@
             <h2>Amazon S3 bucket created</h2>
             
         </div>
+        
+        <div>
+        <a href="index.jsp">Home</a>
+        </div>
           		  
 </body>
 </html>

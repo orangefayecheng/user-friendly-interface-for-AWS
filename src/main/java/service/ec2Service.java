@@ -1,9 +1,14 @@
 package service;
 
+import java.io.File;
+import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 import com.amazonaws.auth.AWSCredentialsProviderChain;
+import com.amazonaws.auth.AWSStaticCredentialsProvider;
+import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.auth.profile.ProfileCredentialsProvider;
 import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
@@ -20,12 +25,23 @@ public class ec2Service {
 	
 	private AmazonEC2 ec2;
 	
-	public MessageModelEC2 ec2Create(String instance_type, String key_name, String security_group, String regionName, String amiId) {
+	public MessageModelEC2 ec2Create(String instance_type, String key_name, String security_group, String regionName, String amiId) throws FileNotFoundException {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
 	    //ami-0489c6c0a2c0b6281
 	    
 		RunInstancesRequest runInstancesRequest = new RunInstancesRequest()
@@ -43,12 +59,23 @@ public class ec2Service {
 		return messagemodel;
 	}
 	
-	public List<Instance> listInstance(String peerRegion) {
+	public List<Instance> listInstance(String peerRegion) throws FileNotFoundException {
 		List<Instance> instanceList = new ArrayList<Instance>();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(peerRegion).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(peerRegion).build();
 	    
 	    for (Reservation reservation : ec2.describeInstances().getReservations()) {
 	    	for (Instance instance : reservation.getInstances()) {
@@ -58,12 +85,23 @@ public class ec2Service {
 	    return instanceList;
 	}
 	
-	public List<KeyPairInfo> listKeyPair(String peerRegion) {
+	public List<KeyPairInfo> listKeyPair(String peerRegion) throws FileNotFoundException {
 		List<KeyPairInfo> keyPairList = new ArrayList<KeyPairInfo>();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(peerRegion).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(peerRegion).build();
 	    
 	    DescribeKeyPairsResult response = ec2.describeKeyPairs();
 	    
@@ -73,12 +111,23 @@ public class ec2Service {
 	    return keyPairList;
 	}
 	
-	public MessageModelEC2 createKeyPair(String keyOption, String keyPairName, String regionName) {
+	public MessageModelEC2 createKeyPair(String keyOption, String keyPairName, String regionName) throws FileNotFoundException {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
-		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-	            new ProfileCredentialsProvider("default"));
+		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
 
-	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
 	    
 	    if (keyOption.equals("Create")) {
 	    
@@ -102,5 +151,12 @@ public class ec2Service {
 		messagemodel.setMessage("KeyPair created with name: " + keyPairName);	
 		return messagemodel;
 	}
+	
+//	public Collection<Image> listAmis() {
+//		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
+//	            new ProfileCredentialsProvider("default"));
+//
+//	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
+//	}
 	
 }

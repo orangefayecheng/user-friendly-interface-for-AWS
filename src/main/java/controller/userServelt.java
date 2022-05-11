@@ -10,7 +10,11 @@ import entity.user;
 import service.userService;
 import value_entity.MessageModel;
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.Scanner;
 @WebServlet("/login")
 public class userServelt extends HttpServlet {
    private userService u_serv= new userService();
@@ -20,10 +24,16 @@ public class userServelt extends HttpServlet {
 	     String userpwd = req.getParameter("upwd");
 	     MessageModel returnmessage = u_serv.userLogin(username,userpwd);
 	     user u = returnmessage.getMessage_object();
-	     System.out.println(u.getUseraccesskey());
 	     if (returnmessage.getStatus_code() == 1) {
 	    	 req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	 res.sendRedirect("s3.jsp");
+	    	 PrintWriter writer = new PrintWriter("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+	    	 writer.print("");
+	    	 writer.println(u.getUsermasterkey());
+	    	 writer.println(u.getUseraccesskey());
+	    	 writer.close();
+	    	 
+	    	 
+	    	 res.sendRedirect("index.jsp");
 	     }
 	     else {
 	    	 req.getSession().setAttribute("returnmessage", returnmessage);
