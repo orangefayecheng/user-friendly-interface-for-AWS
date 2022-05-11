@@ -12,6 +12,7 @@ import com.amazonaws.services.ec2.model.CreateVpcPeeringConnectionRequest;
 import com.amazonaws.services.ec2.model.CreateVpcPeeringConnectionResult;
 import com.amazonaws.services.ec2.model.CreateVpcRequest;
 import com.amazonaws.services.ec2.model.CreateVpcResult;
+import com.amazonaws.services.ec2.model.DeleteVpcRequest;
 import com.amazonaws.services.ec2.model.DescribeVpcsResult;
 import com.amazonaws.services.ec2.model.Vpc;
 
@@ -21,20 +22,30 @@ public class vpcService {
 	
 	private AmazonEC2 ec2;
 	
-	public MessageModelEC2 vpcCreate(String cidrBlock, String regionName) {
+	public MessageModelEC2 vpcCreate(String vpcId, String vpcOption, String cidrBlock, String regionName) {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
 		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
 	            new ProfileCredentialsProvider("default"));
 
 	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
 	    
-		CreateVpcRequest newVPC = new CreateVpcRequest("In");
-		newVPC.setCidrBlock(cidrBlock);
-		CreateVpcResult res = ec2.createVpc(newVPC);
-		Vpc vp = res.getVpc();
-		String vpcId = vp.getVpcId();
+	    if (vpcOption.equals("Add")) {
+	    
+			CreateVpcRequest newVPC = new CreateVpcRequest("In");
+			newVPC.setCidrBlock(cidrBlock);
+			ec2.createVpc(newVPC);
+			
+	    }
+	    
+	    else {
+	    	
+	    	DeleteVpcRequest request = new DeleteVpcRequest().withVpcId(vpcId);
+	    	
+	    	ec2.deleteVpc(request);
+	    	
+	    }
         messagemodel.setStatus_code(1);  
-		messagemodel.setMessage("VPC created with id: " + vpcId);	
+		messagemodel.setMessage("VPC created or deleted with id: " + vpcId);	
 		return messagemodel;
 	}
 	
@@ -47,7 +58,6 @@ public class vpcService {
 	    
 	    CreateVpcPeeringConnectionRequest vpc = new CreateVpcPeeringConnectionRequest()
 	    		.withPeerVpcId(peerId)
-        		//.withPeerRegion(peerRegion)
         		.withVpcId(vpcId);
 	    
 	    CreateVpcPeeringConnectionResult id = ec2.createVpcPeeringConnection(vpc);

@@ -17,15 +17,17 @@ public class vpcServelt extends HttpServlet {
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 	    String cidrBlock = req.getParameter("cidrBlock");
-	    String regionName = req.getParameter("regionName");
-	    MessageModelEC2 returnmessage = vpcService.vpcCreate(cidrBlock, regionName);
+	    String regionName = req.getParameter("vpcRegion");
+	    String vpcIdDel = req.getParameter("vpcIdDel");
+	    String vpcOption = req.getParameter("vpcOption");
+	    MessageModelEC2 returnmessage = vpcService.vpcCreate(vpcIdDel, vpcOption, cidrBlock, regionName);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	res.sendRedirect("index.jsp");
+	    	res.sendRedirect("vpc.jsp");
 	    }
 	    else {
 	    	req.getSession().setAttribute("returnmessage", returnmessage);
-	    	req.getRequestDispatcher("vpc.jsp").forward(req, res);
+	    	req.getRequestDispatcher("vpcPeering.jsp").forward(req, res);
 	    }
    }
 }

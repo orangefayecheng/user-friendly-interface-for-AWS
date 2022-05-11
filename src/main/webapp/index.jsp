@@ -22,15 +22,22 @@
     <link rel="stylesheet" href="styles/styles.css" type="text/css" media="screen">
 </head>
 <body>
-        <div class="section grid grid5 s3">
-            <h2>Amazon S3 Buckets:</h2>
-            <form id="region" method="post" >
+<p>
+<div>
+<form id="region" method="post" >
             <select name="regionName" id="regionName">
-                   <option value="us-east-2" selected>us-east-2</option>
+            <option value="Choose">Choose region</option>
                    <option value="us-east-1">us-east-1</option>
+                   <option value="us-east-2">us-east-2</option>
+                   <option value="us-west-1">us-west-1</option>
+                   <option value="us-west-2">us-west-2</option>
               </select>
              <input type="submit" value="submit"/>
              </form>
+             </div>
+        <div class="section grid grid5 s3">
+            <h2>Amazon S3 Buckets:</h2>
+            
             <ul>
             <% s3Service s3Service = new s3Service(); %>
             <% String regionName = "us-east-2"; %>
@@ -49,17 +56,30 @@
             <% } %>
             </ul>
             
+            <div class="section grid grid5 s3">
+            <h2>Add or delete objects and buckets:</h2>
+            
+            <h3>How to use this:</h3>
+            
+            <ul>
+            <li>To add a file inside bucket, choose add as bucket action and provide bucket name and upload file.
+            <li>To delete a file inside bucket, choose delete as bucket option and provide file name and bucket name.
+            <li>To delete a bucket, delete everything inside it and choose delete as bucket option and provide bucket name.
+            </ul>
+            
             <form action ="s3options" method="post" id="s3options" enctype="multipart/form-data">
-            bucket_option:
+            Bucket Action:
              <select name="bucketOption" id="bucketOption">
+             <option value="Choose">Choose an option</option>
                    <option value="Add">Add</option>
                    <option value="Delete">Delete</option>
-              </select>
-             objectName: <input type="text" name="objectName" id="objectName"> <br>
-             bucketName: <input type="text" name="bucketName" id="BucketName"> <br>
-             addFile: <input type="file" name="addFile" id="addFile">
+              </select><br>
+             File Name: <input type="text" name="objectName" id="objectName"> <br>
+             Bucket Name: <input type="text" name="bucketName" id="BucketName"> <br>
+             Upload file: <input type="file" name="addFile" id="addFile">
              <button type="button" id="s3optionsButton">Select</button>
     		 </form>
+    		 </div>
            
         </div>
         
@@ -81,6 +101,9 @@
 					
             </ul>
             
+            <div class="section grid grid5 gridlast ec2">
+        
+            <h2>Amazon EC2 Instances:</h2>
             <form action ="ec2options" method="post" id="ec2options">
             instance_option:
              <select name="optionName" id="optionName">
@@ -88,10 +111,11 @@
                    <option value="Start">Start</option>
                    <option value="Terminate">Terminate</option>
                    <option value="Reboot">Reboot</option>
-              </select>
+              </select><br>
              instance: <input type="text" name="instance_id" id="instance_id"> <br>
              <button type="button" id="ec2optionsButton">Select</button>
     		 </form>
+    		 </div>
      
           
         </div>
@@ -99,12 +123,12 @@
 		<h2>
 		<a href="ec2.jsp">Create new ec2</a>
 		</h2>
-		<h3>
+		<h2>
 		<a href="s3.jsp">Create new s3 bucket</a>
-		</h3>
-		<h3>
+		</h2>
+		<h2>
 		<a href="vpc.jsp">Create a new vpc</a>
-		</h3>
+		</h2>
 		</div>
 		
 		<script type="text/javascript" src="js/jquery.js"></script>
