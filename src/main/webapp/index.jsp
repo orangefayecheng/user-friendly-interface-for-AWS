@@ -34,7 +34,7 @@
              <input type="submit" value="submit"/>
              </form>
              </div>
-        <div class="section grid grid5 s3">
+        <div class="section grid grid5 gridlast s3">
             <h2>Amazon S3 Buckets:</h2>
             
             <ul>

@@ -2,9 +2,10 @@
 <html>
 <head>
      <title> Register a user account</title>
+     <link rel="stylesheet" href="styles/style.css" type="text/css" media="screen">
 </head>
 <body>
-<div style = "text-align:center">
+<div class="login">
      <form action ="register" method="post" id="registerForm">
              username: <input type="text" name="uname" id="uname" value ="${returnmessage.message_object.username}"> <br>
              password: <input type="password" name="upwd" id="upwd" value ="${returnmessage.message_object.userpwd}"> <br>
