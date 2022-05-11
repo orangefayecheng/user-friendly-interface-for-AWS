@@ -9,6 +9,8 @@
              username: <input type="text" name="uname" id="uname" value ="${returnmessage.message_object.username}"> <br>
              password: <input type="password" name="upwd" id="upwd" value ="${returnmessage.message_object.userpwd}"> <br>
              repeatpassword:  <input type="password" name="rpwd" id="rpwd" value ="${returnmessage.message_object.userpwd}"> <br>
+             usermasterkey: <input type="text" name="umaster" id="umaster" value ="${returnmessage.message_object.umasterkey}"> <br>
+             useraccesskey: <input type="text" name="uaccess" id="uaccess" value ="${returnmessage.message_object.uaccess}"> <br>
              <span id="msg" style="font-size: 12px;color: red"> ${returnmessage.message}</span> <br>
              <button type="button" id="RegisterBtn">Register</button>
      </form>
@@ -20,6 +22,8 @@ $("#RegisterBtn").click(function(){
 	var uname = $("#uname").val();
 	var upwd = $("#upwd").val();
 	var rpwd = $("#rpwd").val();
+	var umaster =  $("#umaster").val();
+	var uaccess = $("#uaccess").val();
 	if(isNull(uname)){
 		$("#msg").html("user name cannot be empty")
 		return;
@@ -30,6 +34,14 @@ $("#RegisterBtn").click(function(){
 	}
 	if(isNull(rpwd)){
 		$("#msg").html("You need to input repeat password")
+		return;
+	}
+	if(isNull(umaster)){
+		$("#msg").html("You need to input a master key")
+		return;
+	}
+	if(isNull(uaccess)){
+		$("#msg").html("You need to input a access key")
 		return;
 	}
 	if(rpwd != upwd){

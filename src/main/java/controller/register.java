@@ -11,17 +11,18 @@ import service.userService;
 import value_entity.MessageModel;
 @WebServlet("/register")
 public class register extends HttpServlet{
-	private static final long serialVersionUID = 1L;
 	private userService u_serv= new userService();
 	   @Override
 	   protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 		     String username = req.getParameter("uname");
 		     String userpwd = req.getParameter("upwd");
 		     String repeatpwd = req.getParameter("rpwd");
-		     MessageModel returnmessage = u_serv.userRegister(username,userpwd,repeatpwd);
+		     String usermasterkey = req.getParameter("umaster");
+		     String useraccesskey = req.getParameter("uaccess");
+		     MessageModel returnmessage = u_serv.userRegister(username,userpwd,repeatpwd,usermasterkey,useraccesskey);
 		     if (returnmessage.getStatus_code() == 1) {
 		    	 req.getSession().setAttribute("user", returnmessage.getMessage_object());
-		    	 res.sendRedirect("index.jsp");
+		    	 res.sendRedirect("login.jsp");
 		     }
 		     else {
 		    	 req.getSession().setAttribute("returnmessage", returnmessage);

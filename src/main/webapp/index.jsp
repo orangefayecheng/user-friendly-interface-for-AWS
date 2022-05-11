@@ -87,7 +87,7 @@
         
             <h2>Amazon EC2 Instances:</h2>
           		  
-            <ul>
+            
             <% ec2Service ec2Service = new ec2Service(); %>
             <% String myRegion = request.getParameter("regionName"); %>
             <% if (myRegion == null) { %>
@@ -95,11 +95,24 @@
             <% } %>
             <% List<Instance> instanceList = new ArrayList<Instance>(); %>
             <% instanceList = ec2Service.listInstance(myRegion); %>
+            <table>
+            	<tr>
+            	<th> Instance Id</th>
+            	<th> Instance Key Pair</th>
+            	<th> Instance type</th>
+            	<th> Instance status</th>
+            	</tr>
            	<% for (Instance instance : instanceList) { %>
-                <li><%= instance.getInstanceId() %>
+                <tr>
+                <td><%= instance.getInstanceId() %></td>
+                <td><%= instance.getKeyName() %></td>
+                <td><%= instance.getInstanceType() %>
+                <td><%= instance.getState() %></td>
+                <tr>
 			<% } %>
+			</table>
 					
-            </ul>
+           
             
             <div class="section grid grid5 gridlast ec2">
         

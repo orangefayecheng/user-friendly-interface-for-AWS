@@ -6,22 +6,24 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import entity.user;
 import service.userService;
 import value_entity.MessageModel;
 
 import java.io.IOException;
 @WebServlet("/login")
 public class userServelt extends HttpServlet {
-   private static final long serialVersionUID = 1L;
-private userService u_serv= new userService();
+   private userService u_serv= new userService();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
 	     String username = req.getParameter("uname");
 	     String userpwd = req.getParameter("upwd");
 	     MessageModel returnmessage = u_serv.userLogin(username,userpwd);
+	     user u = returnmessage.getMessage_object();
+	     System.out.println(u.getUseraccesskey());
 	     if (returnmessage.getStatus_code() == 1) {
 	    	 req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	 res.sendRedirect("index.jsp");
+	    	 res.sendRedirect("s3.jsp");
 	     }
 	     else {
 	    	 req.getSession().setAttribute("returnmessage", returnmessage);
