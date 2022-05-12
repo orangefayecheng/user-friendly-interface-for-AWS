@@ -1,0 +1,120 @@
+body {
+    font-family: monospace, serif;
+    background-color: #212121;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+a{
+	display: block;
+	text-decoration: underline;
+	color: #b2b3b4;
+	float: right;
+	padding: 10px;
+	
+}
+
+a:hover{
+	color: red;
+}
+
+a:active{
+	color: silver;
+}
+
+
+.login{
+    background-color: #333;
+    width: 270px;
+    height: 500px;
+    padding: 40px;
+    color: #b2b3b4; 
+    box-shadow: 10px 10px 10px #00000080;
+    text-align: left;
+    border-radius: 22px;
+}
+
+.login h2{
+	text-align: center
+}
+
+
+
+.login input{
+    display: block;
+    margin: 5px auto;
+    text-align: center;
+    background: none;
+    padding: 10px;
+    border-radius: 22px;
+    outline: none;
+    block-size: auto;
+}
+
+.login #loginBtn{
+	display: block;
+	padding: 10px;
+	margin: 5px auto;
+	width: 250px;
+	border: 1px solid #b2b3b4;
+	text-align: center;
+	border-radius: 22px;
+	float: center;
+	block-size: auto;       
+	
+}
+
+.login #RegisterBtn{
+	display: block;
+	padding: 10px;
+	margin: 5px auto;
+	width: 250px;
+	border: 1px solid #b2b3b4;
+	text-align: center;
+	border-radius: 22px;
+	float: center;
+	block-size: auto;  
+}
+
+.login #loginBtn:hover{
+	background: #d9889c;
+	color: #b2b3b4;
+}
+
+.login #RegisterBtn:hover{
+	background: #d9889c;
+	color: #b2b3b4;
+}
+
+.login #msg{
+	color: red;
+	font-size: 10px;
+	padding: 12px;
+	margin: 0 auto;
+	
+}
+
+.login input[type="text"], .login input[type="password"]{
+    border: 1px solid #b2b3b4;
+    width: 250px; 
+}
+
+.login input[type="submit"]{
+    border: 2px solid green;
+    cursor: pointer;
+    
+}
+
+.login input[type="text"]:focus, .login input[type="password"]:focus{
+    border-color: yellow;
+    width: 250px;
+    transition: 0.5s;
+}
+
+.login input[type="submit"]:hover{
+    background-color: yellow;
+    transition: 0.5s;
+
+}

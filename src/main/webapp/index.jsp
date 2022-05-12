@@ -8,23 +8,11 @@
 <%@ page import="com.amazonaws.services.s3.model.*" %>
 <%@ page import="com.amazonaws.services.dynamodbv2.*" %>
 <%@ page import="com.amazonaws.services.dynamodbv2.model.*" %>
-
-<%! // Share the client objects across threads to
-    // avoid creating new clients for each web request
-    private AmazonEC2         ec2;
-    private AmazonS3           s3;
-    private AmazonDynamoDB dynamo;
- %>
-
-<%
-    if (ec2 == null) {
-        AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-            new InstanceProfileCredentialsProvider(),
-            new ProfileCredentialsProvider("default"));
-        ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion("us-east-2").build();
-        s3     = new AmazonS3Client(credentialsProvider);
-    }
-%>
+<%@ page import="service.ec2optionsService" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.ArrayList" %>
+<%@ page import="service.s3Service" %>
+<%@ page import="service.ec2Service" %>
 
 <!DOCTYPE html>
 <html>
@@ -35,44 +23,155 @@
 </head>
 <body>
 <p>
+<div>
+<form id="region" method="post" >
+            <select name="regionName" id="regionName">
+                   <option value="us-east-1">us-east-1</option>
+                   <option value="us-east-2" selected>us-east-2</option>
+                   <option value="us-west-1">us-west-1</option>
+                   <option value="us-west-2">us-west-2</option>
+              </select>
+             <input type="submit" value="submit"/>
+             </form>
+             </div>
         <div class="section grid grid5 s3">
             <h2>Amazon S3 Buckets:</h2>
+            
             <ul>
-            <% for (Bucket bucket : s3.listBuckets()) { %>
-               <li> <%= bucket.getName() %> </li>
+            <% s3Service s3Service = new s3Service(); %>
+            <% String regionName = "us-east-2"; %>
+            <% List<String> bucketList = new ArrayList<String>(); %>
+            <% List<String> objectList = new ArrayList<String>(); %>
+            <% bucketList = s3Service.s3ListBuckets(regionName); %>
+            <% for (String bucket : bucketList) { %>
+            	<li><%= bucket %>
+            	<% objectList = s3Service.s3ListObjects(regionName, bucket); %>
+            	<ul>
+            	<% for (String objectName : objectList) { %>
+            		<li><%= objectName %>
+            	<% } %>
+            	 
+            	</ul>
             <% } %>
             </ul>
-        </div>
-        </p>
-
-		<p>
-        <div class="section grid grid5 gridlast ec2">
-            <h2>Amazon EC2 Instances:</h2>
-          		  
+            
+            <div class="section grid s3">
+            <h2>Add or delete objects and buckets:</h2>
+            
+            <h3>How to use this:</h3>
+            
             <ul>
-            <% for (Reservation reservation : ec2.describeInstances().getReservations()) { %>
-                <% for (Instance instance : reservation.getInstances()) { %>
-                   <li><%= instance.getInstanceId() %>
-                   <%= instance.getImageId() %>
-                   <%= instance.getInstanceType() %>
-                   <%= instance.getState().getName() %></li>
-                <% } %>
-            <% } %>
+            <li>To add a file inside bucket, choose add as bucket action and provide bucket name and upload file.
+            <li>To delete a file inside bucket, choose delete as bucket option and provide file name and bucket name.
+            <li>To delete a bucket, delete everything inside it and choose delete as bucket option and provide bucket name.
             </ul>
+            
+            <form action ="s3options" method="post" id="s3options" enctype="multipart/form-data">
+            Bucket Action:
+             <select name="bucketOption" id="bucketOption">
+             <option value="Choose">Choose an option</option>
+                   <option value="Add">Add</option>
+                   <option value="Delete">Delete</option>
+              </select><br>
+             File Name: <input type="text" name="objectName" id="objectName"> <br>
+             Bucket Name: <input type="text" name="bucketName" id="BucketName"> <br>
+             Upload file: <input type="file" name="addFile" id="addFile"><br>
+             <button type="button" id="s3optionsButton">Select</button>
+    		 </form>
+    		 </div>
            
         </div>
-        </p>
+        
+        <div class="section grid grid5 gridlast ec2">
+        
+            <h2>Amazon EC2 Instances:</h2>
+          		  
+            
+            <% ec2Service ec2Service = new ec2Service(); %>
+            <% String myRegion = request.getParameter("regionName"); %>
+            <% if (myRegion == null) { %>
+            <% myRegion = "us-east-2"; %>
+            <% } %>
+            <% List<Instance> instanceList = new ArrayList<Instance>(); %>
+            <% instanceList = ec2Service.listInstance(myRegion); %>
+            <table>
+            	<tr>
+            	<th> Instance Id</th>
+            	<th> Instance Key Pair</th>
+            	<th> Instance type</th>
+            	<th> Instance status</th>
+            	<th> AMI Id</th>
+            	</tr>
+           	<% for (Instance instance : instanceList) { %>
+                <tr>
+                <td><%= instance.getInstanceId() %></td>
+                <td><%= instance.getKeyName() %></td>
+                <td><%= instance.getInstanceType() %>
+                <td><%= instance.getState().getName() %></td>
+                <td><%= instance.getImageId() %>
+                <tr>
+			<% } %>
+			</table>
+					
+           
+            
+            <div class="section grid grid5 gridlast ec2">
+        
+            <h2>Amazon EC2 Instances:</h2>
+            <form action ="ec2options" method="post" id="ec2options">
+            instance_option:
+             <select name="optionName" id="optionName">
+                   <option value="Stop">Stop</option>
+                   <option value="Start">Start</option>
+                   <option value="Terminate">Terminate</option>
+                   <option value="Reboot">Reboot</option>
+              </select><br>
+             instance: <input type="text" name="instance_id" id="instance_id"> <br>
+             region: <input type="text" name="region" id="region"> <br>
+             <button type="button" id="ec2optionsButton">Select</button>
+    		 </form>
+    		 </div>
+     
+          
+        </div>
 		<div class="section grid grid5 gridlast ec2">
 		<h2>
 		<a href="ec2.jsp">Create new ec2</a>
-		<!-- <form action ="ec2" method="post" id="ec2Create">
-		<button type="button" id="ec222">create ec2</button></form> --></div>
-		<script type="text/javascript">
-		$("#ec222").click(function(){
-			$("#ec2Create").submit();
-			
-		});
-		</script>
 		</h2>
+		<h2>
+		<a href="s3.jsp">Create new s3 bucket</a>
+		</h2>
+		<h2>
+		<a href="vpc.jsp">Create a new vpc</a>
+		</h2>
+		</div>
+		
+		
+		<div>
+		<a href="login.jsp">Logout</a>
+		</div>
+		
+		<script type="text/javascript" src="js/jquery.js"></script>
+					<script type="text/javascript">
+					$("#ec2optionsButton").click(function(){
+						selectElement = document.querySelector('#optionName');
+						optionName = selectElement.value;
+						instance_id = $("#instance_id").val();
+						regionName = $('#region').value;
+						$("#ec2options").submit();
+						
+					});
+					
+					$("#s3optionsButton").click(function(){
+						selectElementOption = document.querySelector('#bucketOption');
+						bucketOption = selectElementOption.value;
+						objectName = $("#objectName").val();
+						bucketName = $("#bucketName").val();
+						$("#s3options").submit();
+						
+					});
+		
+					</script>
+		
 </body>
 </html>

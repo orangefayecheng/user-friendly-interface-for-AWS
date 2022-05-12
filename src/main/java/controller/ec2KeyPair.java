@@ -6,28 +6,26 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import service.ec2Service;
 import value_entity.MessageModelEC2;
-
+import service.ec2Service;
 import java.io.IOException;
-@WebServlet("/ec2")
-public class ec2servelt extends HttpServlet {
+@WebServlet("/ec2KeyPair")
+public class ec2KeyPair extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ec2Service ec2Service = new ec2Service();
    @Override
    protected void service(HttpServletRequest req, HttpServletResponse res) throws IOException, ServletException {
-	   	String instance_type = req.getParameter("instance_type");
-	   	String key_name = req.getParameter("key_name");
-	    String regionName = req.getParameter("regionName");
-	    String amiId = req.getParameter("amiId");
-	    MessageModelEC2 returnmessage = ec2Service.ec2Create(instance_type, key_name, regionName, amiId);
+	   	String keyPairName = req.getParameter("keyPairName");
+	   	String keyRegion = req.getParameter("keyRegion");
+	   	String keyOption = req.getParameter("keyOption");
+	   	MessageModelEC2 returnmessage = ec2Service.createKeyPair(keyOption, keyPairName, keyRegion);
 	    if (returnmessage.getStatus_code() == 1) {
 	    	req.getSession().setAttribute("user", returnmessage.getMessage_object() );
-	    	res.sendRedirect("ec2message.jsp");
+	    	res.sendRedirect("ec2.jsp");
 	    }
 	    else {
 	    	req.getSession().setAttribute("returnmessage", returnmessage);
-	    	req.getRequestDispatcher("ec2.jsp").forward(req, res);
+	    	req.getRequestDispatcher("index.jsp").forward(req, res);
 	    }
    }
 }

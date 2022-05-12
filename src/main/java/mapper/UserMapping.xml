@@ -7,6 +7,6 @@
          select * from aws_userinfo.userinfo where username = #{uname}
  </select>
 <insert id="createUser" parameterType="Map" useGeneratedKeys="true" keyColumn="userId">
-       insert into aws_userinfo.userinfo (username,userpwd) values (#{uname},#{upwd})
+       insert into aws_userinfo.userinfo (username,userpwd,usermasterkey,useraccesskey) values (#{uname},#{upwd},#{umaster},#{uaccess})
 </insert>
 </mapper>

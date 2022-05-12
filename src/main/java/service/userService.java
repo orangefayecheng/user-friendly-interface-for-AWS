@@ -37,11 +37,13 @@ public class userService {
 		messagemodel.setMessage_object(us);
 		return messagemodel;
 	}
-    public MessageModel userRegister(String username, String userpwd, String repeatpwd){
+    public MessageModel userRegister(String username, String userpwd, String repeatpwd,String umaster, String uaccess){
     	MessageModel messagemodel  = new MessageModel();
 		user u = new user();
 		u.setusername(username);
 		u.setuserpwd(userpwd);
+		u.setUsermasterkey(umaster);
+		u.setUseraccesskey(uaccess);
 		messagemodel.setMessage_object(u);
 		if(Stringnull.isEmpty(username) || Stringnull.isEmpty(userpwd)) {
 			messagemodel.setStatus_code(0);
@@ -61,7 +63,7 @@ public class userService {
 			messagemodel.setMessage("username has already been taken.");
 			return messagemodel;
 		}
-		userMapping.createUser(username, userpwd);
+		userMapping.createUser(username, userpwd,umaster,uaccess);
 		session.commit();
 		messagemodel.setMessage_object(u);
 		return messagemodel;

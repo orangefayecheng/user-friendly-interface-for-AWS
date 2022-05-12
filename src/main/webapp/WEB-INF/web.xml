@@ -4,4 +4,11 @@
 
 <web-app>
   <display-name>Archetype Created Web Application</display-name>
+  <welcome-file-list>
+    <welcome-file>login.jsp</welcome-file>
+</welcome-file-list>
+  <error-page>
+  <exception-type>java.lang.Throwable</exception-type>
+  <location>/AppExceptionHandler</location>
+</error-page>
 </web-app>

@@ -4,6 +4,8 @@ public class user {
     private Integer userID;
     private String  username;
     private String  userpwd;
+    private String  usermasterkey;
+    private String  useraccesskey;
 	public Integer getUserID() {
 		return userID;
 	}
@@ -22,6 +24,17 @@ public class user {
 	public void setuserpwd(String uPwd) {
 		this.userpwd = uPwd;
 	}
+	public String getUsermasterkey() {
+		return usermasterkey;
+	}
+	public void setUsermasterkey(String usermasterkey) {
+		this.usermasterkey = usermasterkey;
+	}
+	public String getUseraccesskey() {
+		return useraccesskey;
+	}
+	public void setUseraccesskey(String useraccesskey) {
+		this.useraccesskey = useraccesskey;
+	}
 	
-    
 }
