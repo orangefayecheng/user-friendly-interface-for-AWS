@@ -137,13 +137,13 @@
         </div>
 		<div class="section grid grid5 gridlast ec2">
 		<h2>
-		<a href="ec2.jsp">EC2</a>
+		<a href="ec2.jsp">Create EC2 instance</a>
 		</h2>
 		<h2>
-		<a href="s3.jsp">S3</a>
+		<a href="s3.jsp">Create S3 bucket</a>
 		</h2>
 		<h2>
-		<a href="vpc.jsp">VPC</a>
+		<a href="vpc.jsp">VPC Create/Delete & VPC Peering</a>
 		</h2>
 		</div>
 		
