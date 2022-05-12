@@ -96,7 +96,24 @@ CONTAINERS
 /*************************************
 GRIDS
 *************************************/
-.grid { float: left; margin-right: 20px; }
+.grid { float: left; 
+		margin-right: 20px;}
 .gridlast { margin-right: 0; }
-.grid5 { width: 500px; }
+.grid5 { width: 600px; }
 .grid15 { width: 940px; }
+
+table {
+  font-family: arial, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+}
+
+td, th {
+  border: 1px solid #dddddd;
+  text-align: left;
+  padding: 8px;
+}
+
+tr:nth-child(even) {
+  background-color: #dddddd;
+}

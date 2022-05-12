@@ -34,7 +34,7 @@
              <input type="submit" value="submit"/>
              </form>
              </div>
-        <div class="section grid grid5 gridlast s3">
+        <div class="section grid grid5 s3">
             <h2>Amazon S3 Buckets:</h2>
             
             <ul>
@@ -55,7 +55,7 @@
             <% } %>
             </ul>
             
-            <div class="section grid grid5 s3">
+            <div class="section grid s3">
             <h2>Add or delete objects and buckets:</h2>
             
             <h3>How to use this:</h3>
@@ -75,7 +75,7 @@
               </select><br>
              File Name: <input type="text" name="objectName" id="objectName"> <br>
              Bucket Name: <input type="text" name="bucketName" id="BucketName"> <br>
-             Upload file: <input type="file" name="addFile" id="addFile">
+             Upload file: <input type="file" name="addFile" id="addFile"><br>
              <button type="button" id="s3optionsButton">Select</button>
     		 </form>
     		 </div>
@@ -100,13 +100,15 @@
             	<th> Instance Key Pair</th>
             	<th> Instance type</th>
             	<th> Instance status</th>
+            	<th> AMI Id</th>
             	</tr>
            	<% for (Instance instance : instanceList) { %>
                 <tr>
                 <td><%= instance.getInstanceId() %></td>
                 <td><%= instance.getKeyName() %></td>
                 <td><%= instance.getInstanceType() %>
-                <td><%= instance.getState() %></td>
+                <td><%= instance.getState().getName() %></td>
+                <td><%= instance.getImageId() %>
                 <tr>
 			<% } %>
 			</table>

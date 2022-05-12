@@ -3,6 +3,8 @@ package service;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
 
@@ -14,7 +16,10 @@ import com.amazonaws.services.ec2.AmazonEC2;
 import com.amazonaws.services.ec2.AmazonEC2ClientBuilder;
 import com.amazonaws.services.ec2.model.CreateKeyPairRequest;
 import com.amazonaws.services.ec2.model.DeleteKeyPairRequest;
+import com.amazonaws.services.ec2.model.DescribeImagesRequest;
 import com.amazonaws.services.ec2.model.DescribeKeyPairsResult;
+import com.amazonaws.services.ec2.model.Filter;
+import com.amazonaws.services.ec2.model.Image;
 import com.amazonaws.services.ec2.model.Instance;
 import com.amazonaws.services.ec2.model.KeyPairInfo;
 import com.amazonaws.services.ec2.model.Reservation;
@@ -25,7 +30,7 @@ public class ec2Service {
 	
 	private AmazonEC2 ec2;
 	
-	public MessageModelEC2 ec2Create(String instance_type, String key_name, String security_group, String regionName, String amiId) throws FileNotFoundException {
+	public MessageModelEC2 ec2Create(String instance_type, String key_name, String regionName, String amiId) throws FileNotFoundException {
 		MessageModelEC2 messagemodel  = new MessageModelEC2();
 		File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
 		
@@ -50,8 +55,7 @@ public class ec2Service {
         		  .withKeyName(key_name) 
         		  .withMinCount(1)
         		  .withMaxCount(1)
-        		  .withSecurityGroups(security_group); 
-        ec2.runInstances(runInstancesRequest);
+        		  .withSecurityGroups("default"); 
         String myInstanceId = ec2.runInstances(runInstancesRequest).getReservation().getInstances().get(0).getInstanceId();
         		
         messagemodel.setStatus_code(1);  
@@ -152,11 +156,32 @@ public class ec2Service {
 		return messagemodel;
 	}
 	
-//	public Collection<Image> listAmis() {
-//		AWSCredentialsProviderChain credentialsProvider = new AWSCredentialsProviderChain(
-//	            new ProfileCredentialsProvider("default"));
-//
-//	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(credentialsProvider).withRegion(regionName).build();
-//	}
+	public Collection<Image> listAmis(String regionName, String platform) throws FileNotFoundException {
+File file = new File("/Users/aashishpokhrel/user-friendly-interface-for-AWS/src/test/key.txt");
+		
+		Scanner scan = new Scanner(file);
+		String usermasterkey ="";
+		String useraccesskey ="";
+		
+		while (scan.hasNextLine()) {
+			usermasterkey = scan.nextLine();
+			useraccesskey = scan.nextLine();
+		}
+		scan.close();
+		
+		BasicAWSCredentials awsCreds = new BasicAWSCredentials(usermasterkey, useraccesskey);
+
+	    ec2    = AmazonEC2ClientBuilder.standard().withCredentials(new AWSStaticCredentialsProvider(awsCreds)).withRegion(regionName).build();
+	    
+	    DescribeImagesRequest response = new DescribeImagesRequest().withFilters(new LinkedList<Filter>()).withOwners("amazon");
+	    
+		response.getFilters().add(new Filter().withName("architecture").withValues("x86_64"));
+		    
+		response.getFilters().add(new Filter().withName("description").withValues("*" + platform + "*"));
+		    
+		Collection<Image> images = ec2.describeImages(response).getImages();
+		
+		return images;
+	}
 	
 }
