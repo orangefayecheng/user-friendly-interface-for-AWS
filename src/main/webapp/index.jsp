@@ -22,6 +22,7 @@
     <link rel="stylesheet" href="styles/styles.css" type="text/css" media="screen">
 </head>
 <body>
+
 <p>
 <div>
 <form id="region" method="post" >
@@ -136,13 +137,13 @@
         </div>
 		<div class="section grid grid5 gridlast ec2">
 		<h2>
-		<a href="ec2.jsp">Create new ec2</a>
+		<a href="ec2.jsp">EC2</a>
 		</h2>
 		<h2>
-		<a href="s3.jsp">Create new s3 bucket</a>
+		<a href="s3.jsp">S3</a>
 		</h2>
 		<h2>
-		<a href="vpc.jsp">Create a new vpc</a>
+		<a href="vpc.jsp">VPC</a>
 		</h2>
 		</div>
 		

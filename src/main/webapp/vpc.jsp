@@ -66,7 +66,7 @@
                    <option value="us-west-1">us-west-1</option>
                    <option value="us-west-2">us-west-2</option>
               </select><br>
-             Cidr Block: <input type="text" name="cidrBlock" id="cidrBlock"> <br>
+             Cidr Block: <input type="text" placeholder="10.0.0.0/24" name="cidrBlock" id="cidrBlock"> <br>
              VPC Id: <input type="text" name="vpcIdDel" id="vpcIdDel"> <br>
              <button type="button" id="createVPCbutton">Submit</button>
      </form>
@@ -76,9 +76,9 @@
             <h2>Amazon VPC Peering Connection:</h2>
             
             <form action ="vpcPeering" method="post" id="vpcPeering">
-             Peer Id: <input type="text" name="peerId" id="peerId"> <br>
-             Peer Region: <input type="text" name="peerRegion" id="peerRegion"> <br>
-             Vpc Id: <input type="text" name="vpcId" id="vpcId"> <br>
+             Accepter VPC Id: <input type="text" name="peerId" id="peerId"> <br>
+             Accepter VPC Region: <input type="text" name="peerRegion" id="peerRegion"> <br>
+             Requester VPC Id: <input type="text" name="vpcId" id="vpcId"> <br>
              <button type="button" id="createVpcPeeringButton">Create vpc peering</button>
              </form>
             </div>

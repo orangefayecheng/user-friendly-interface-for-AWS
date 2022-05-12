@@ -15,6 +15,8 @@
              <span id="msg" style="font-size: 12px;color: red"> ${returnmessage.message}</span> <br>
              <button type="button" id="RegisterBtn">Register</button>
      </form>
+     
+     <a href="login.jsp">Go back to login</a>
 </div>
 </body>
 <script type="text/javascript" src="js/jquery.js"></script>
